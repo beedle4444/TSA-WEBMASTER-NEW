@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- Submit Resource form -->
+<div class="container mt-4 p-5 bg-primary text-dark rounded">
+    <h1>Submit a Resource</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.resource_title.label }} {{ form.resource_title(class='form-control') }}
+        {{ form.resource_description.label }} {{ form.resource_description(class='form-control') }}
+        {{ form.resource_date.label }} {{ form.resource_date(class='form-control') }}
+        {{ form.resource_time.label }} {{ form.resource_time(class='form-control') }}
+        {{ form.resource_location.label }} {{ form.resource_location(class='form-control') }}
+        {{ form.resource_category.label }} {{ form.resource_category(class='form-control', id='categorySelect') }}
+        {{ form.resource_volunteering_tags.label(id = 'volunteeringLabel') }} {{ form.resource_volunteering_tags(class='form-control', id='volunteeringSection') }}
+        {{ form.resource_education_tags.label(id = 'educationLabel') }} {{ form.resource_education_tags(class='form-control', id='educationSection') }}
+        {{ form.resource_recreation_tags.label(id = 'recreationLabel') }} {{ form.resource_recreation_tags(class='form-control', id='recreationSection') }}
+        {{ form.submit(class='btn btn-primary') }}
+    </form>
+</div>
+
+<!-- JavaScript for the form. Will show only tags relating to the chosen category, and make the other tags required or not required depending on the category. Couldn't find a more efficient way to do this, yet. -->
+<script>
+    const categorySelect = document.getElementById('categorySelect');
+    const volunteeringSection = document.getElementById('volunteeringSection');
+    const educationSection = document.getElementById('educationSection');
+    const recreationSection = document.getElementById('recreationSection');
+    const volunteeringLabel = document.getElementById('volunteeringLabel');
+    const educationLabel = document.getElementById('educationLabel');
+    const recreationLabel = document.getElementById('recreationLabel');
+    categorySelect.value = 'Select a Category';
+    volunteeringLabel.style.display = 'none';
+    educationLabel.style.display = 'none';
+    recreationLabel.style.display = 'none';
+    volunteeringSection.style.display = 'none';
+    educationSection.style.display = 'none';
+    recreationSection.style.display = 'none';
+    volunteeringSection.required = false;
+    educationSection.required = false;
+    recreationSection.required = false;
+    categorySelect.addEventListener('change', function() {
+        if (this.value === 'volunteering') {
+            volunteeringSection.style.display = 'block';
+            volunteeringLabel.style.display = 'block';
+            document.querySelector('#volunteeringSection').required = true;
+            educationSection.style.display = 'none';
+            educationLabel.style.display = 'none';
+            document.querySelector('#educationSection').required = false;
+            recreationSection.style.display = 'none';
+            recreationLabel.style.display = 'none';
+            document.querySelector('#recreationSection').required = false;
+        } else if (this.value === 'education') {
+            volunteeringSection.style.display = 'none';
+            volunteeringLabel.style.display = 'none';
+            document.querySelector('#volunteeringSection').required = false;
+            educationSection.style.display = 'block';
+            educationLabel.style.display = 'block';
+            document.querySelector('#educationSection').required = true;
+            recreationSection.style.display = 'none';
+            recreationLabel.style.display = 'none';
+            document.querySelector('#recreationSection').required = false;
+        } else if (this.value === 'recreation') {
+            volunteeringSection.style.display = 'none';
+            volunteeringLabel.style.display = 'none';
+            document.querySelector('#volunteeringSection').required = false;
+            educationSection.style.display = 'none';   
+            educationLabel.style.display = 'none';
+            document.querySelector('#educationSection').required = false;
+            recreationSection.style.display = 'block';
+            recreationLabel.style.display = 'block';
+            document.querySelector('#recreationSection').required = true;
+        } else {
+            volunteeringSection.style.display = 'none';
+            volunteeringLabel.style.display = 'none';
+            document.querySelector('#volunteeringSection').required = false;
+            educationSection.style.display = 'none';
+            educationLabel.style.display = 'none';
+            document.querySelector('#educationSection').required = false;
+            recreationSection.style.display = 'none';
+            recreationLabel.style.display = 'none';
+            document.querySelector('#recreationSection').required = false;
+        }
+    });
+</script>
+{% endblock %}

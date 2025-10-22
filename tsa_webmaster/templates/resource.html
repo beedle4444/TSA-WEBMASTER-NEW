@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- If the user reaches a resource's page from a different page, show a flashed message -->
+{% if resourcemessage == "delete" %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>You are not authorized to delete this resource.</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% elif resourcemessage == "attend" %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Congratulations!</strong> You are now attending this resource.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% elif resourcemessage == "unattend" %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>You are no longer attending this resource.</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% elif resourcemessage == "already_attending" %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>You're already attending this resource.</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% elif resourcemessage == "not_attending" %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>You cannot unattend a resource you're not attending.</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% elif resourcemessage == "already_created" %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>You created this resource!</strong> You are attending it.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+<!-- Resource description page-->
+<div class="container mt-4 p-5 bg-primary text-dark rounded">
+    <h1>{{ resource.resource_title }}</h1>
+    <p>Created by: {{ resource.author.username }}</p>
+    <p>Created on: {{ resource.created_date.strftime('%Y-%m-%d') }}</p>
+    <p>Category: {{ resource.resource_category }}</p>
+    <p>Tags: {{ resource.resource_tags }}</p>
+    <p>Description: {{ resource.resource_description }}</p>
+    <p>Location: {{ resource.resource_location }}</p>
+    <p>Date: {{ resource.resource_date.strftime('%Y-%m-%d') }}</p>
+    <p>Time: {{ resource.resource_time.strftime('%H:%M') }}</p>
+    {% if current_user.is_authenticated and current_user.id == resource.user_id %}
+    <a href="#" class="btn btn-primary">Edit</a>
+    <a href="{{ url_for('views.delete', resource_id = resource.id) }}" class="btn btn-danger">Delete</a>
+    {% endif %}
+    {% if current_user.is_authenticated%}
+            {% if current_user.id != resource.user_id %}
+                {% if is_attending == False %}
+                <a href="{{ url_for('views.attend', resource_id = resource.id) }}" class="btn btn-success">Attend</a>
+                {% else %}
+                <a href="{{ url_for('views.unattend', resource_id = resource.id) }}" class="btn btn-danger">Unattend</a>
+                {% endif %}
+            {% else %}
+            <p><strong>You created this resource!</strong></p>
+            {% endif %}
+    {% else %}
+    <a href="{{ url_for('views.login') }}" class="btn btn-success">Login to Attend</a>
+    {% endif %}
+    <h2>Attendees</h2>
+    {% if resource.attendees and resource.attendees|length > 0 %}
+    <ul>
+        {% for attendee in resource.attendees %}
+        <li>{{ attendee.attendee.username }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No attendees yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

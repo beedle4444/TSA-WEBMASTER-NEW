@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- If the user is redirected to the login page from a different page, or if they put an invalid email or password, show a flashed message -->
+{% if loginmessage == "register" %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Thanks for Signing Up!</strong> Please login to continue.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+{% elif loginmessage == "submit" %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Please login first!</strong> You must be logged in to submit a resource.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+{% elif loginmessage == "attend" %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Please login first!</strong> You must be logged in to attend a resource.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+{% elif loginmessage == "unattend" %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Please login first!</strong> You must be logged in to unattend a resource.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% elif loginmessage == "invalid" %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Invalid username or password.</strong> Please try again.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+{% endif %}
+<!-- Login form -->
+<div class="container mt-4 p-5 bg-primary text-dark rounded">
+    <h1>Login</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {{ form.email.label }} {{ form.email(class='form-control') }}
+        {{ form.password.label }} {{ form.password(class='form-control') }}
+        {{ form.submit(class='btn btn-primary') }}
+    </form>
+</div>
+{% endblock %}
