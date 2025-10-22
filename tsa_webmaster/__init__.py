@@ -5,6 +5,7 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from dotenv import load_dotenv
 
+#For local machine testing
 load_dotenv()
 
 db = SQLAlchemy()
@@ -26,4 +27,5 @@ def create_app():
     from tsa_webmaster.views import views
     app.register_blueprint(views)
     
+
     return app
