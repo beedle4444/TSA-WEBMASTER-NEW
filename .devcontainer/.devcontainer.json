@@ -1,0 +1,38 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "hostRequirements": {
+    "cpus": 4
+  },
+  "waitFor": "onCreateCommand",
+  "updateContentCommand": "pip install -r requirements.txt",
+  "postCreateCommand": [
+    "sudo apt update",
+    "sudo apt install mariadb-server -y",
+    "sudo service mariadb start"
+  ],
+  "postAttachCommand": {
+    "server": "flask --debug run"
+  },
+  "portsAttributes": {
+    "5000": {
+      "label": "Application",
+      "onAutoForward": "openPreview"
+    }
+  },
+   "remoteEnv": {
+    "DATABASE_URL": "postgresql://akshath:epb4l6_rl82kdaSTMJQbFQ@scarce-bee-17420.j77.aws-us-west-2.cockroachlabs.cloud:26257/tsa_webmaster_db?sslmode=verify-full"
+  },
+  "customizations": {
+    "codespaces": {
+      "openFiles": [
+        "templates/index.html"
+      ]
+    },
+    "vscode": {
+      "extensions": [
+        "ms-python.python"
+      ]
+    }
+  },
+  "forwardPorts": [5000]
+}

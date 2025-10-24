@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% block content %}
+  <main>
+    <!-- If the user is redirected to the home page from a different page, show a flashed message -->
+    {% if indexmessage == "login" %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>You're logged in!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% elif indexmessage == "submit" %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Resource submitted!</strong> Thanks for your submission!
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% elif indexmessage == "logout" %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Successfully logged out!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% elif indexmessage == "resource" %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Resource not found!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% elif indexmessage == "account" %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Account not found!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% elif indexmessage == "delete" %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Resource deleted!</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+
+    <section id="home" class="hero">
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <h2>Connecting People with Local Support, Events, and Opportunities</h2>
+          <p>Discover, share, and connect with your community’s resources.</p>
+          <div class="hero-cta">
+            <a href="#resources" class="btn">Explore Resources</a>
+            <a href="#submit" class="btn btn-outline">Submit a Resource</a>
+          </div>
+        </div>
+        
+        <div class="hero-features">
+          <div class="feature">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <h4>Searchable Directory</h4>
+            <p>Find services near you by category, distance, and hours.</p>
+          </div>
+          <div class="feature">
+            <i class="fa-solid fa-calendar-days"></i>
+            <h4>Local Events</h4>
+            <p>Discover nearby community events and volunteer opportunities.</p>
+          </div>
+          <div class="feature">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+            <h4>Trusted Support</h4>
+            <p>Community-verified resources and contact information.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- rest of page remains unchanged -->
+    <section id="highlights" class="container">
+      <h2>Featured Community Highlights</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h3>Resource Highlight 1</h3>
+          <p>Placeholder description for a featured local resource.</p>
+          <a href="#" class="btn">Learn More</a>
+        </div>
+        <div class="card">
+          <h3>Resource Highlight 2</h3>
+          <p>Placeholder description for another featured service.</p>
+          <a href="#" class="btn">Learn More</a>
+        </div>
+        <div class="card">
+          <h3>Resource Highlight 3</h3>
+          <p>Placeholder description for a third local resource.</p>
+          <a href="#" class="btn">Learn More</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="resources" class="container">
+      <h2>Resource Hub Directory</h2>
+      <input type="text" id="search" placeholder="Search resources..." />
+
+      <div class="filter">
+        <select id="categoryFilter">
+          <option value="all">All Categories</option>
+          <option value="volunteering">Volunteering</option>
+          <option value="education">Education</option>
+          <option value="recreation">Recreation</option>
+          <option value="misc">Miscellaneous</option>
+        </select>
+      </div>
+
+      <div id="resourceList" class="card-grid">
+        <!-- Resources -->
+         {% for resource in resources %}
+        <div class="card" data-category="{{ resource.resource_category }}">
+          <h3>{{ resource.resource_title }}</h3>
+          <p>Created by: {{ resource.author.username }}</p>
+          <p>Created on: {{ resource.created_date.strftime('%Y-%m-%d') }}</p>
+          <p>Category: {{ resource.resource_category }}</p>
+          <p>Tags: {{ resource.resource_tags }}</p>
+          <p class="truncate">Description: {{ resource.resource_description }}</p>
+          <p>Location: {{ resource.resource_location }}</p>
+          <p>Date: {{ resource.resource_date.strftime('%Y-%m-%d') }}</p>
+          <p>Time: {{ resource.resource_time.strftime('%H:%M') }}</p>
+          <a href="{{ url_for('views.resource', resource_id=resource.id) }}" class="btn">Learn More</a>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section id="submit" class="container">
+      <h2>Submit a New Resource</h2>
+      <form id="resourceForm">
+        <label for="name">Resource Name</label>
+        <input type="text" id="name" required>
+
+        <label for="description">Description</label>
+        <textarea id="description" required></textarea>
+
+        <label for="category">Category</label>
+        <select id="category" required>
+          <option value="">Select a Category</option>
+          <option value="volunteering">Volunteering</option>
+          <option value="education">Education</option>
+          <option value="recreation">Recreation</option>
+          <option value="misc">Miscellaneous</option>
+        </select>
+
+        <label for="contact">Contact Info</label>
+        <input type="text" id="contact" required>
+
+        <button type="submit" class="btn">Submit Resource</button>
+      </form>
+      <p id="formMessage"></p>
+    </section>
+
+    <section id="about" class="container">
+      <h2>About This Project</h2>
+      <p>
+        We are the greatest TSA team!!!!!! We are the greatest!
+      </p>
+    </section>
+  </main>
+{% endblock %}

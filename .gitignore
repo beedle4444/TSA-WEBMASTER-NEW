@@ -1,0 +1,4 @@
+#Files to ignore when checking into git
+./tsa_webmaster/__pycache__/
+./tsa_webmaster/migrations/__pycache/
+./tsa_webmaster/.env/
