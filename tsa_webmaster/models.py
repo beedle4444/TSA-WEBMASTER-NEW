@@ -45,9 +45,8 @@ class Resources(db.Model):
     resource_location = db.Column(db.String(200), nullable = False)
     resource_category = db.Column(db.String(100), nullable = False)
     resource_tags = db.Column(db.String(100), nullable = True, default = "None")
-    attendees = db.relationship('ResourceAttendees', backref = 'resource', lazy = 'select', cascade = 'all, delete-orphan')
 
-    def __init__(self, created_date, resource_title, resource_description, resource_date, resource_time, resource_location, resource_category, resource_tags, user_id, resource_attendees):
+    def __init__(self, created_date, resource_title, resource_description, resource_date, resource_time, resource_location, resource_category, resource_tags, user_id):
         self.created_date = created_date
         self.resource_title = resource_title
         self.resource_description = resource_description
@@ -57,6 +56,8 @@ class Resources(db.Model):
         self.resource_category = resource_category
         self.resource_tags = resource_tags
         self.user_id = user_id
+
+    attendees = db.relationship('ResourceAttendees', backref = 'resource', lazy = 'select', cascade = 'all, delete-orphan')
 
     def __repr__(self):
         return f"Event ID: {self.id} -- Created: {self.created_date} -- Title: {self.event_title} -- Date: {self.event_date}"

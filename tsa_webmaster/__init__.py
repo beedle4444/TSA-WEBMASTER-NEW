@@ -14,6 +14,7 @@ login_manager = LoginManager()
 
 def create_app():
     app = Flask(__name__)
+    print("app created")
     
     app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL') or 'mysql+pymysql://root:password@localhost/tsa_webmaster_db'
@@ -27,5 +28,4 @@ def create_app():
     from tsa_webmaster.views import views
     app.register_blueprint(views)
     
-
     return app
